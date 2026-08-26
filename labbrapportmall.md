@@ -23,15 +23,16 @@ Fyll i tabellen. Minst ett fynd ska komma från statisk analys (CodeQL) och mins
 
 | Nr | Källa (CodeQL/ZAP) | Regel-id eller alert | Allvarlighet (+ confidence för ZAP) | Fil och rad eller URL | Verkligt eller falskt positivt | Motivering (2–4 meningar) |
 |----|--------------------|----------------------|-------------------------------------|-----------------------|--------------------------------|---------------------------|
-| 1 |  |  |  |  |  |  |
+| 1 | CodeQL | `cs/xml/insecure-dtd-handling` | Critical | `SakerLabb.Web/Services/ImportService.cs`, rad 27 | Verkligt | Appen tar emot XML-text från användaren. Inställningarna gör att XML-texten kan be appen läsa information från andra platser. En angripare kan därför försöka få appen att läsa något den inte borde läsa. |
 | 2 |  |  |  |  |  |  |
 | 3 |  |  |  |  |  |  |
 | 4 |  |  |  |  |  |  |
 | 5 |  |  |  |  |  |  |
 
 Bevis (skärmbilder eller utdrag), numrerade efter fyndet ovan:
+### Fynd 1, före åtgärd
 
-*Klistra in här, eller hänvisa till bilagor.*
+<img src="bevis/fynd-1-codeql-fore.png" alt="CodeQL-fynd 1 före åtgärd" width="700">
 
 ---
 
