@@ -54,9 +54,25 @@ Bevis (skärmbilder eller utdrag), numrerade efter fyndet ovan:
 
 ## 3. Prioritering
 
-Rangordna fynden och motivera ordningen med allvarlighetsgrad, exponering och utnyttjbarhet. Vilket tar du först och varför?
+**1. Remote OS Command Injection**
 
-*Skriv här.*
+Jag tar detta fynd först eftersom ZAP lyckades köra ett extra Windows kommando utan inloggning. Det visar att felet går att använda och att skadan kan bli stor. En angripare kan försöka läsa filer eller köra andra kommandon på servern.
+
+**2. Directory Browsing**
+
+Jag tar detta som nummer två eftersom vem som helst kan öppna fillistan utan att logga in. Filerna innehåller lösenord och personuppgifter. Felet är mycket enkelt att utnyttja eftersom det räcker att öppna en adress i webbläsaren.
+
+**3. Osäker XML-hantering**
+
+CodeQL bedömer fyndet som Critical. Appen tar emot XML från användaren och XML läsaren tillåter funktioner som kan läsa information från andra platser. Felet kan orsaka stor skada, men kräver att angriparen skickar särskilt skapad XML.
+
+**4. Cross Site Scripting**
+
+ZAP visade att testkod kom tillbaka på inloggningssidan. En angripare kan försöka få kod att köras i en annan användares webbläsare. Jag placerar fyndet efter de tre första eftersom angreppet normalt kräver att en användare öppnar skadligt innehåll.
+
+**5. Saknad X-Content-Type-Options-header**
+
+Detta placeras sist eftersom ZAP bedömer risken som Low. Säkerhetsinställningen bör finnas, men den saknade inställningen ger inte ensam samma direkta åtkomst till servern eller känsliga uppgifter som de andra fynden.
 
 ---
 
