@@ -30,17 +30,17 @@ Fyll i tabellen. Minst ett fynd ska komma från statisk analys (CodeQL) och mins
 | 5 |  |  |  |  |  |  |
 
 Bevis (skärmbilder eller utdrag), numrerade efter fyndet ovan:
-### Fynd 1, före åtgärd
+### Fynd 1, CodeQL statisk analys, före åtgärd
 
 <img src="bevis/fynd-1-codeql-fore.png" alt="CodeQL-fynd 1 före åtgärd" width="700">
 
-### Fynd 2, före åtgärd
+### Fynd 2, ZAP passiv analys, före åtgärd
 
-<img src="bevis/fynd-2-zap-directory-browsing-fore.png" alt="ZAP-fynd Directory Browsing före åtgärd" width="700">
+<img src="bevis/fynd-2-zap-passiv-directory-browsing-fore.png" alt="ZAP-fynd Directory Browsing före åtgärd" width="700">
 
-### Fynd 3, före åtgärd
+### Fynd 3, ZAP passiv analys, före åtgärd
 
-<img src="bevis/fynd-3-zap-content-type-header-fore.png" alt="ZAP-fynd X-Content-Type-Options före åtgärd" width="700">
+<img src="bevis/fynd-3-zap-passiv-content-type-header-fore.png" alt="ZAP-fynd X-Content-Type-Options före åtgärd" width="700">
 
 ---
 
