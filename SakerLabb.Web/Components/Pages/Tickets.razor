@@ -18,7 +18,8 @@
 
 @if (!string.IsNullOrEmpty(Search))
 {
-    <p class="result-head">@((MarkupString)("Sökresultat för <strong>" + Search + "</strong>"))</p>
+    @* Vanlig Razor-utmatning gör söktextens HTML- och JavaScript-tecken ofarliga. *@
+    <p class="result-head">Sökresultat för <strong>@Search</strong></p>
 }
 
 <table class="table">
