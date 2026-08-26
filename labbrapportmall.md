@@ -1,25 +1,21 @@
 # Labbrapport: praktisk laboration
 
-*Kunskapskontroll 2, IT-säkerhet för utvecklare. Fyll i mallen och lämna in som PDF tillsammans med länken till ditt repo. Riktlängd två till tre sidor.*
+Kunskapskontroll 2, IT-säkerhet för utvecklare
 
-**Namn:**
-**Datum:**
-**Repo (länk till din fork):**
-**Applikation som analyserades:**
+**Namn:** Daniel Aldemir<br>
+**Datum:** 2026-08-26<br>
+**Repo:** https://github.com/danielaldemir79/SakerLabb<br>
+**Applikation som analyserades:** SakerLabb Support
 
 ---
 
 ## 1. Kort om applikationen och analysen
 
-Beskriv i några meningar vilken app du analyserade, vad den gör och hur du genomförde analysen. Ange vilka verktyg du använde och hur du körde dem (CodeQL default setup med språk C#, ZAP passiv och aktiv skanning mot vilken adress).
-
-*Skriv här.*
+SakerLabb Support är ett ärendehanteringssystem byggt med Blazor och .NET 10. Jag använde CodeQL med default setup och språket C# för att granska koden. Jag använde även OWASP ZAP mot `http://localhost:5080` och genomförde både passiv och aktiv skanning. Efter rättningarna körde jag verktygen igen för att kontrollera resultatet.
 
 ---
 
 ## 2. Fem fynd
-
-Fyll i tabellen. Minst ett fynd ska komma från statisk analys (CodeQL) och minst ett från dynamisk analys (ZAP). Spara bevis i form av skärmbild eller rapportutdrag och hänvisa till det per fynd.
 
 | Nr | Källa (CodeQL/ZAP) | Regel-id eller alert | Allvarlighet (+ confidence för ZAP) | Fil och rad eller URL | Verkligt eller falskt positivt | Motivering (2–4 meningar) |
 |----|--------------------|----------------------|-------------------------------------|-----------------------|--------------------------------|---------------------------|
@@ -78,45 +74,65 @@ Detta placeras sist eftersom ZAP bedömer risken som Low. Säkerhetsinställning
 
 ## 4. Åtgärder (minst tre)
 
-Använd mönstret nedan per åtgärdat fynd. Varje åtgärd ska gå att spåra tillbaka till ett fynd i tabellen ovan, och beviset efter ska vara en **ny körning av verktyget**, inte din egen kod.
-
 ### Åtgärd 1
 
 ```
-Fynd:        (nr och regel-id/alert från tabellen ovan)
-Plats:       (fil och rad, eller URL)
-Bevis före:  (skärmbild eller rapportutdrag som visar fyndet)
-Bedömning:   (verkligt eller falskt positivt, kort motiverat)
-Åtgärd:      (vad du ändrade, med commit-hash)
-Bevis efter: (ny körning: CodeQL-alerten står som Fixed, eller ZAP-larmet är borta ur den nya rapporten)
+Fynd:        1, cs/xml/insecure-dtd-handling
+Plats:       SakerLabb.Web/Services/ImportService.cs, rad 27
+Bevis före:  bevis/fynd-1-codeql-fore.png
+Bedömning:   Verkligt. Användaren kunde skicka XML som försökte läsa information från andra platser.
+Åtgärd:      Jag stängde av DTD och externa länkar i XML-läsaren, commit 0d0e043.
+Bevis efter: Kompletteras efter CodeQL-körningen på main, när alerten visar status Fixed.
 ```
 
 ### Åtgärd 2
 
 ```
-Fynd:
-Plats:
-Bevis före:
-Bedömning:
-Åtgärd:
-Bevis efter:
+Fynd:        4, Remote OS Command Injection
+Plats:       http://localhost:5080/diagnostik/ping, parameter host
+Bevis före:  bevis/fynd-4-zap-aktiv-command-injection-fore.png
+Bedömning:   Verkligt. ZAP lyckades köra ett extra Windows-kommando genom ping-funktionen.
+Åtgärd:      Jag tog bort cmd.exe och skickar nu adressen direkt till ping.exe, commit d132537.
+Bevis efter: Ny ZAP-rapport i bevis/zap-efter/. Larmet Remote OS Command Injection finns inte längre i rapporten.
 ```
 
 ### Åtgärd 3
 
 ```
-Fynd:
-Plats:
-Bevis före:
-Bedömning:
-Åtgärd:
-Bevis efter:
+Fynd:        2, Directory Browsing
+Plats:       http://localhost:5080/files/
+Bevis före:  bevis/fynd-2-zap-passiv-directory-browsing-fore.png
+Bedömning:   Verkligt. Besökare kunde se en lista över filer utan att logga in.
+Åtgärd:      Jag tog bort funktionen som visade fillistan, commit 2cc0a6c.
+Bevis efter: Ny ZAP-rapport i bevis/zap-efter/. Larmet Directory Browsing finns inte längre i rapporten.
 ```
+### Åtgärd 4
+
+```
+Fynd:        5, Cross Site Scripting (Reflected)
+Plats:       Inloggningens username och ärendesökningens search
+Bevis före:  bevis/fynd-5-zap-aktiv-xss-fore.png
+Bedömning:   Verkligt. Användarens text kunde skickas tillbaka som osäker HTML.
+Åtgärd:      Jag tog bort osäker HTML-visning så att texten kodas automatiskt, commits a6f1bc6 och ea7b1b3.
+Bevis efter: Ny ZAP-rapport i bevis/zap-efter/. Larmet Cross Site Scripting (Reflected) finns inte längre i rapporten.
+```
+
+### Bevis efter åtgärd
+
+Den nya ZAP-rapporten finns i `bevis/zap-efter/`. Command Injection, Directory Browsing och Reflected XSS saknas i rapporten efter rättningarna.
+
+<img src="bevis/zap-efter-rattningar-oversikt-16-fynd.png" alt="ZAP-översikt efter rättningar" width="600">
 
 ---
 
 ## 5. Eventuella bortval
 
-Om du valt att inte åtgärda ett fynd, skriv ned tre saker per bortval: risken, motivet och den kompenserande kontrollen. Sätt gärna ett datum för omprövning.
+**Fynd 3: Saknad X-Content-Type-Options-header**
 
-*Skriv här, eller skriv "inga bortval".*
+**Risk:** Webbläsaren kan i vissa fall tolka en fil som fel typ.
+
+**Motiv:** Jag valde att först åtgärda fynd med högre risk och tydligare påverkan. ZAP bedömde detta fynd som Low.
+
+**Kompenserande kontroll:** Applikationen körs endast lokalt i laborationen och publiceras inte på internet.
+
+**Omprövning:** Fyndet bör åtgärdas innan applikationen publiceras eller används i en riktig miljö.
