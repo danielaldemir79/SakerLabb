@@ -82,7 +82,7 @@ Plats:       SakerLabb.Web/Services/ImportService.cs, rad 27
 Bevis före:  bevis/fynd-1-codeql-fore.png
 Bedömning:   Verkligt. Användaren kunde skicka XML som försökte läsa information från andra platser.
 Åtgärd:      Jag stängde av DTD och externa länkar i XML-läsaren, commit 0d0e043.
-Bevis efter: Kompletteras efter CodeQL-körningen på main, när alerten visar status Fixed.
+Bevis efter: En ny CodeQL-körning visar alerten som Fixed i bevis/fynd-1-codeql-efter-fixed.png.
 ```
 
 ### Åtgärd 2
@@ -119,9 +119,11 @@ Bevis efter: Ny ZAP-rapport i bevis/zap-efter/. Larmet Cross Site Scripting (Ref
 
 ### Bevis efter åtgärd
 
-Den nya ZAP-rapporten finns i `bevis/zap-efter/`. Command Injection, Directory Browsing och Reflected XSS saknas i rapporten efter rättningarna.
+CodeQL visar XML-fyndet som Fixed. Den nya ZAP-rapporten finns i `bevis/zap-efter/`. Command Injection, Directory Browsing och Reflected XSS saknas i rapporten efter rättningarna.
 
-<img src="bevis/zap-efter-rattningar-oversikt-16-fynd.png" alt="ZAP-översikt efter rättningar" width="600">
+| CodeQL efter rättning | ZAP efter rättningar |
+|---|---|
+| <img src="bevis/fynd-1-codeql-efter-fixed.png" alt="CodeQL-fynd 1 med status Fixed" width="360"> | <img src="bevis/zap-efter-rattningar-oversikt-16-fynd.png" alt="ZAP-översikt efter rättningar" width="360"> |
 
 ---
 
