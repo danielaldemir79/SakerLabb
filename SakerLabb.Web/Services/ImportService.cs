@@ -53,11 +53,15 @@ public class ImportService
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                Arguments = "/c ping -n 2 " + host,
+                // Kör ping direkt så att användarens text inte kan tolkas som Windows-kommandon.
+                FileName = "ping.exe",
                 RedirectStandardOutput = true,
+                // Fånga även fel från ping så att de kan hanteras av appen.
+                RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                // Separata argument hindrar värdnamnet från att bli en del av en kommandorad.
+                ArgumentList = { "-n", "2", host }
             }
         };
 
