@@ -25,7 +25,7 @@ Fyll i tabellen. Minst ett fynd ska komma från statisk analys (CodeQL) och mins
 |----|--------------------|----------------------|-------------------------------------|-----------------------|--------------------------------|---------------------------|
 | 1 | CodeQL | `cs/xml/insecure-dtd-handling` | Critical | `SakerLabb.Web/Services/ImportService.cs`, rad 27 | Verkligt | Appen tar emot XML-text från användaren. Inställningarna gör att XML-texten kan be appen läsa information från andra platser. En angripare kan därför försöka få appen att läsa något den inte borde läsa. |
 | 2 | ZAP | Directory Browsing | Medium, confidence: Medium | `http://localhost:5080/files/` | Verkligt | Appen visar en lista över filer utan att användaren behöver logga in. Filerna innehåller information som inte borde vara öppen för alla. |
-| 3 |  |  |  |  |  |  |
+| 3 | ZAP | X-Content-Type-Options Header Missing | Low, confidence: Medium | `http://localhost:5080/app.css` | Verkligt | Appen saknar en säkerhetsinställning som säger åt webbläsaren att använda filens riktiga typ. Utan den kan webbläsaren i vissa fall tolka innehållet på fel sätt. |
 | 4 |  |  |  |  |  |  |
 | 5 |  |  |  |  |  |  |
 
@@ -37,6 +37,10 @@ Bevis (skärmbilder eller utdrag), numrerade efter fyndet ovan:
 ### Fynd 2, före åtgärd
 
 <img src="bevis/fynd-2-zap-directory-browsing-fore.png" alt="ZAP-fynd Directory Browsing före åtgärd" width="700">
+
+### Fynd 3, före åtgärd
+
+<img src="bevis/fynd-3-zap-content-type-header-fore.png" alt="ZAP-fynd X-Content-Type-Options före åtgärd" width="700">
 
 ---
 
