@@ -24,7 +24,7 @@ Fyll i tabellen. Minst ett fynd ska komma från statisk analys (CodeQL) och mins
 | Nr | Källa (CodeQL/ZAP) | Regel-id eller alert | Allvarlighet (+ confidence för ZAP) | Fil och rad eller URL | Verkligt eller falskt positivt | Motivering (2–4 meningar) |
 |----|--------------------|----------------------|-------------------------------------|-----------------------|--------------------------------|---------------------------|
 | 1 | CodeQL | `cs/xml/insecure-dtd-handling` | Critical | `SakerLabb.Web/Services/ImportService.cs`, rad 27 | Verkligt | Appen tar emot XML-text från användaren. Inställningarna gör att XML-texten kan be appen läsa information från andra platser. En angripare kan därför försöka få appen att läsa något den inte borde läsa. |
-| 2 |  |  |  |  |  |  |
+| 2 | ZAP | Directory Browsing | Medium, confidence: Medium | `http://localhost:5080/files/` | Verkligt | Appen visar en lista över filer utan att användaren behöver logga in. Filerna innehåller information som inte borde vara öppen för alla. |
 | 3 |  |  |  |  |  |  |
 | 4 |  |  |  |  |  |  |
 | 5 |  |  |  |  |  |  |
@@ -33,6 +33,10 @@ Bevis (skärmbilder eller utdrag), numrerade efter fyndet ovan:
 ### Fynd 1, före åtgärd
 
 <img src="bevis/fynd-1-codeql-fore.png" alt="CodeQL-fynd 1 före åtgärd" width="700">
+
+### Fynd 2, före åtgärd
+
+<img src="bevis/fynd-2-zap-directory-browsing-fore.png" alt="ZAP-fynd Directory Browsing före åtgärd" width="700">
 
 ---
 
