@@ -6,8 +6,9 @@
 
 @if (Error == "1")
 {
+    @* Visa användarnamnet som vanlig text så att HTML- och JavaScript-kod inte kan köras. *@
     <div class="alert alert-danger">
-        Fel användarnamn eller lösenord för @((MarkupString)(Username ?? "")).
+        Fel användarnamn eller lösenord för @(Username ?? "").
     </div>
 }
 

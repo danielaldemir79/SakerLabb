@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Extensions.FileProviders;
 using SakerLabb.Web.Components;
 using SakerLabb.Web.Data;
 using SakerLabb.Web.Services;
@@ -41,12 +40,9 @@ app.Use(async (context, next) =>
 
 app.UseCors();
 
+// Tillåt hämtning när hela filadressen är känd, till exempel /files/dokument.txt.
+// UseDirectoryBrowser används inte eftersom den visar en öppen lista över alla filer i mappen.
 app.UseStaticFiles();
-app.UseDirectoryBrowser(new DirectoryBrowserOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.WebRootPath, "files")),
-    RequestPath = "/files"
-});
 
 app.UseAntiforgery();
 

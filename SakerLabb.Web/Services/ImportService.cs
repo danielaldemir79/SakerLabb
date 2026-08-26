@@ -19,11 +19,15 @@ public class ImportService
     {
         var settings = new XmlReaderSettings
         {
-            DtdProcessing = DtdProcessing.Parse,
-            XmlResolver = new XmlUrlResolver()
+            // DTD är extra regler i XML som bland annat kan peka på filer eller andra adresser.
+            // Förbjud DTD så att en användare inte kan få servern att läsa sådant den inte borde.
+            DtdProcessing = DtdProcessing.Prohibit,
+            // Tillåt inte XML-läsaren att hämta filer eller adresser utanför dokumentet.
+            XmlResolver = null
         };
 
-        var document = new XmlDocument { XmlResolver = new XmlUrlResolver() };
+        // Dokumentet får inte heller slå upp externa resurser när XML-innehållet läses in.
+        var document = new XmlDocument { XmlResolver = null };
         using var reader = XmlReader.Create(new StringReader(xml), settings);
         document.Load(reader);
 
@@ -53,11 +57,15 @@ public class ImportService
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                Arguments = "/c ping -n 2 " + host,
+                // Kör ping direkt så att användarens text inte kan tolkas som Windows-kommandon.
+                FileName = "ping.exe",
                 RedirectStandardOutput = true,
+                // Fånga även fel från ping så att de kan hanteras av appen.
+                RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                // Separata argument hindrar värdnamnet från att bli en del av en kommandorad.
+                ArgumentList = { "-n", "2", host }
             }
         };
 
